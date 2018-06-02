@@ -1,5 +1,7 @@
 package com.example.patryk.bricklist_project
 
+import android.app.Activity
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
@@ -10,10 +12,12 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
+    var URL_PREFIX = "http://fcds.cs.put.poznan.pl/MyWeb/BL/"
+    val REQUEST_CODE = 10000
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var viewManager: RecyclerView.LayoutManager
-    val myList = ArrayList<String>()
+    var myList = ArrayList<String>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -40,5 +44,21 @@ class MainActivity : AppCompatActivity() {
         myList.add("Ends")
         recyclerView.adapter.notifyItemInserted(myList.size - 1);
         //recyclerView.adapter.notifyDataSetChanged();
+    }
+
+    fun settingsActivity(v: View) {
+        val i = Intent(this, SettingsActivity::class.java)
+        i.putExtra("urlprefix", URL_PREFIX)
+        startActivityForResult(i, REQUEST_CODE)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if ((requestCode == REQUEST_CODE) && (resultCode == Activity.RESULT_OK)) {
+            if (data != null) {
+                if (data.hasExtra("urlprefix")) {
+                    URL_PREFIX = data.extras.getString("urlprefix")
+                }
+            }
+        }
     }
 }
