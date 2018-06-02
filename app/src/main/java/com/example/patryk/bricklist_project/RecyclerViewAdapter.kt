@@ -9,7 +9,7 @@ import android.widget.TextView
 
 class RecyclerViewAdapter(val items : ArrayList<String>) : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val v = LayoutInflater.from(parent?.context).inflate(R.layout.item_layout, parent, false)
+        val v = LayoutInflater.from(parent?.context).inflate(R.layout.main_item_layout, parent, false)
         return ViewHolder(v);
     }
 
