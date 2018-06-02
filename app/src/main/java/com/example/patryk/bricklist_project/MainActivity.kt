@@ -8,12 +8,12 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.LinearLayout
-import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
     var URL_PREFIX = "http://fcds.cs.put.poznan.pl/MyWeb/BL/"
-    val REQUEST_CODE = 10000
+    val REQUEST_CODE_SETTINGS = 10000
+    val REQUEST_CODE_NEW_SET = 10001
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var viewManager: RecyclerView.LayoutManager
@@ -40,23 +40,36 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun addFunction(v: View) {
-        myList.add("Ends")
-        recyclerView.adapter.notifyItemInserted(myList.size - 1);
-        //recyclerView.adapter.notifyDataSetChanged();
+    fun addNewSet(v: View) {
+        val i = Intent(this, addSetActivity::class.java)
+        startActivityForResult(i, REQUEST_CODE_NEW_SET)
+
+        //myList.add("Ends")
+        //recyclerView.adapter.notifyItemInserted(myList.size - 1);
+        ///*recyclerView.adapter.notifyDataSetChanged();*/
     }
 
     fun settingsActivity(v: View) {
         val i = Intent(this, SettingsActivity::class.java)
         i.putExtra("urlprefix", URL_PREFIX)
-        startActivityForResult(i, REQUEST_CODE)
+        startActivityForResult(i, REQUEST_CODE_SETTINGS)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if ((requestCode == REQUEST_CODE) && (resultCode == Activity.RESULT_OK)) {
-            if (data != null) {
-                if (data.hasExtra("urlprefix")) {
-                    URL_PREFIX = data.extras.getString("urlprefix")
+        if (requestCode == REQUEST_CODE_SETTINGS) {
+            if (resultCode == Activity.RESULT_OK) {
+                        if (data != null) {
+                            if (data.hasExtra("urlprefix")) {
+                                URL_PREFIX = data.extras.getString("urlprefix")
+                            }
+                        }
+                    }
+                }
+        if (requestCode == REQUEST_CODE_NEW_SET) {
+            if (resultCode == Activity.RESULT_OK) {
+                if (data != null) {
+                    var name = data.extras.getString("name")
+                    var number = data.extras.getString("number")
                 }
             }
         }
