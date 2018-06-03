@@ -9,8 +9,15 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.LinearLayout
 import android.database.SQLException
+import android.os.AsyncTask
+import android.util.Log
 import android.widget.Toast
+import java.io.File
+import java.io.FileNotFoundException
+import java.io.FileOutputStream
 import java.io.IOException
+import java.net.MalformedURLException
+import java.net.URL
 
 
 class MainActivity : AppCompatActivity() {
@@ -80,14 +87,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun settingsActivity(v: View) {
-        /*val i = Intent(this, SettingsActivity::class.java)
+        val i = Intent(this, SettingsActivity::class.java)
         i.putExtra("urlprefix", URL_PREFIX)
         startActivityForResult(i, REQUEST_CODE_SETTINGS)
-        */
 
+        /*
         var myval = myDbHelper.testme();
         Toast.makeText(this, myval, Toast.LENGTH_LONG).show()
-
+        */
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -105,6 +112,7 @@ class MainActivity : AppCompatActivity() {
                 if (data != null) {
                     var name = data.extras.getString("name")
                     var number = data.extras.getString("number")
+                    downloadXML(number)
 
                 }
             }
@@ -112,7 +120,59 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    fun downloadXML() {
+    fun downloadXML(number : String) {
+        val xd = XMLDownloader()
+        xd.execute(number)
+    }
 
+    /*fun loadData() {
+        val filename = "615.xml"
+        val path = filesDir
+        val inDir = File(path, "XML")
+
+    }*/
+    private inner class XMLDownloader: AsyncTask<String, Int, String>() {
+        override fun onPreExecute() {
+            super.onPreExecute()
+        }
+
+        override fun onPostExecute(result: String?) {
+            super.onPostExecute(result)
+            Log.e("XML", "DownloadXML Complete")
+            //loadData
+            //showData
+        }
+
+        override fun doInBackground(vararg params: String?): String {
+            try {
+                //Log.e("XML", "$filesDir/XML, ${params.toList()}")
+                var number = params[0]
+                val url = URL("$URL_PREFIX$number.xml")
+                val connection = url.openConnection()
+                connection.connect()
+                //val lengthOfFile = connection.contentLength
+                val isStream = url.openStream()
+                val testDirectory = File("$filesDir/XML")
+
+                if (!testDirectory.exists()) testDirectory.mkdir()
+                val fos = FileOutputStream("$testDirectory/$number.xml")
+                val data = ByteArray(1024)
+                var count = 0
+                count = isStream.read(data)
+                while (count != -1) {
+                   fos.write(data,0, count)
+                    count = isStream.read(data)
+                }
+                isStream.close()
+                fos.close()
+            } catch (e: MalformedURLException) {
+                return "Malformed URL"
+            } catch (e: FileNotFoundException) {
+                return "File not found"
+            } catch (e: IOException) {
+                return "IO Exception"
+            }
+            return "success"
+        }
     }
 }
