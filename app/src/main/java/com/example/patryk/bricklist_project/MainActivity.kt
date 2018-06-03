@@ -116,20 +116,23 @@ class MainActivity : AppCompatActivity() {
                 if (data != null) {
                     var name = data.extras.getString("name")
                     var number = data.extras.getString("number")
-                    downloadXML(number)
+                    downloadXML(number, name)
                 }
             }
         }
     }
 
 
-    fun downloadXML(number : String) {
-        val xd = XMLDownloader(number)
+    fun downloadXML(number : String, name: String) {
+        val xd = XMLDownloader(number, name)
         xd.execute()
     }
 
-    fun loadData(number: String) {
+    fun loadData(number: String, name: String) {
         Log.e("Load","start Load")
+
+        var brickList : MutableList<Brick> = mutableListOf()
+
         val filename = "$number.xml"
         val path = filesDir
         val inDir = File(path, "XML")
@@ -144,8 +147,6 @@ class MainActivity : AppCompatActivity() {
                     if (itemNode.getNodeType() == Node.ELEMENT_NODE) {
                         val elem = itemNode as Element
                         val children = elem.childNodes
-
-                        var brickList:MutableList<Brick>? = null
 
                         var itemtype:String? = null
                         var itemID:String? = null
@@ -173,23 +174,23 @@ class MainActivity : AppCompatActivity() {
                         }
                         Log.e("Load","$itemtype, $itemID, $qty, $color, $extra, $alternate")
                         val b = Brick(itemtype, itemID, qty, color, extra, alternate)
-                        brickList?.add(b)
+                        brickList.add(b)
+                        //Log.e("Dodano", "${brickList?.size}")
                     }
                 }
             }
         }
-
+        //Log.e("Wyslano", "${brickList?.size}")
+        myDbHelper.insertInventory(brickList, number, name)
     }
-    private inner class XMLDownloader(number: String): AsyncTask<String, Int, String>() {
+    private inner class XMLDownloader(number: String, name: String): AsyncTask<String, Int, String>() {
         var number = number
-        override fun onPreExecute() {
-            super.onPreExecute()
-        }
+        var name = name
 
         override fun onPostExecute(result: String?) {
             super.onPostExecute(result)
             Log.e("XML", "DownloadXML Complete")
-            loadData(number)
+            loadData(number, name)
             //showData
         }
 

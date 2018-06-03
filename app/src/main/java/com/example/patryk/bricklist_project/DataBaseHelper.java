@@ -1,5 +1,6 @@
 package com.example.patryk.bricklist_project;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -12,6 +13,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
 
@@ -122,7 +128,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     public void openDataBase() throws SQLException {
         String myPath = DB_PATH + DB_NAME;
-        myDataBase = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
+        myDataBase = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READWRITE);
     }
 
     @Override
@@ -156,6 +162,31 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return myString;
         // mCursor.getString(mCursor.getColumnIndex("Code"));
 
+    }
+
+    public void insertInventory(List<Brick> brickList, String inventoryID, String name) {
+
+        ContentValues insertValues = new ContentValues();
+        insertValues.put("Name", name);
+        insertValues.put("Active", "1");
+        insertValues.put("LastAccessed", new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime()));
+
+        myDataBase.insert("Inventories", null, insertValues);
+        //Log.e("before for", "size =" +  brickList.size());
+        insertValues.clear();
+        for (Brick el : brickList) {
+            //insertValues.put("_id", null);
+            insertValues.put("InventoryID", inventoryID);
+            insertValues.put("TypeID", el.getItemType());
+            insertValues.put("ItemID", el.getItemID());
+            insertValues.put("QuantityInSet", el.getQty());
+            insertValues.put("QuantityInStore", "0");
+            insertValues.put("ColorID", el.getColor());
+            insertValues.put("Extra", el.getExtra());
+
+            myDataBase.insert("InventoriesParts", null, insertValues);
+            //Log.e("Insert", "Insert to the table");
+        }
     }
     // Add your public helper methods to access and get content from the database.
     // You could return cursors by doing "return myDataBase.query(....)" so it'd be easy
