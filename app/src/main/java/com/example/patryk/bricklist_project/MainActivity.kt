@@ -11,6 +11,7 @@ import android.widget.LinearLayout
 import android.database.SQLException
 import android.os.AsyncTask
 import android.util.Log
+import android.widget.Toast
 import org.w3c.dom.Document
 import org.w3c.dom.Element
 import org.w3c.dom.Node
@@ -53,7 +54,7 @@ class MainActivity : AppCompatActivity() {
             throw sqle
         }
 
-        myList = myDbHelper.firstLoadInventories()
+        myList = myDbHelper.loadInventories()
         viewManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
         viewAdapter = RecyclerViewAdapterMain(myList) { position: Int ->
             val i = Intent(this, SetActivity::class.java)
@@ -78,7 +79,10 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
-
+    override fun finish() {
+        myDbHelper.close()
+        super.finish()
+    }
     fun addNewSet(v: View) {
         val i = Intent(this, addSetActivity::class.java)
         startActivityForResult(i, REQUEST_CODE_NEW_SET)
@@ -189,7 +193,15 @@ class MainActivity : AppCompatActivity() {
             super.onPostExecute(result)
             Log.e("XML", "DownloadXML Complete")
             loadData(number, name)
-            //showData
+
+            Log.e("XML", "Load complete")
+            Log.e("Size", myList.size.toString())
+            myList.clear()
+            myList = myDbHelper.loadInventories()
+            Log.e("Sizeafter", myList.size.toString())
+            recyclerView.adapter.notifyDataSetChanged()
+            //recyclerView.adapter.notifyItemInserted(myList.size - 1);
+            Log.e("XML", "After notify")
         }
 
         override fun doInBackground(vararg params: String?): String {

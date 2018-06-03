@@ -149,7 +149,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public ArrayList<Pair<String, String>> firstLoadInventories() {
+    public ArrayList<Pair<String, String>> loadInventories() {
         ArrayList<Pair<String, String>> myList = new ArrayList<Pair<String, String>>();
         Cursor mCursor = myDataBase.rawQuery("SELECT _id, Name FROM Inventories ", null);
 
@@ -210,5 +210,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     // Add your public helper methods to access and get content from the database.
     // You could return cursors by doing "return myDataBase.query(....)" so it'd be easy
     // to you to create adapters for your views.
+    public void clearDB() {
+        //myDataBase.de
+        myDataBase.delete("Inventories", "_id <> '615'", null);
+        myDataBase.delete("InventoriesParts", "InventoryID <> '615'", null);
 
+        //myDataBase.rawQuery("DELETE FROM Inventories WHERE _id != '615'", null).moveToFirst();
+        //myDataBase.rawQuery("DELETE FROM InventoriesParts WHERE InventoryID <> '615'", null);
+        Log.e("delete", "deleteOK");
+    }
 }
