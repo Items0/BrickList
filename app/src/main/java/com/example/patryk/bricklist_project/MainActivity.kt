@@ -11,13 +11,17 @@ import android.widget.LinearLayout
 import android.database.SQLException
 import android.os.AsyncTask
 import android.util.Log
-import android.widget.Toast
+import org.w3c.dom.Document
+import org.w3c.dom.Element
+import org.w3c.dom.Node
+import org.w3c.dom.NodeList
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
 import java.net.MalformedURLException
 import java.net.URL
+import javax.xml.parsers.DocumentBuilderFactory
 
 
 class MainActivity : AppCompatActivity() {
@@ -113,7 +117,6 @@ class MainActivity : AppCompatActivity() {
                     var name = data.extras.getString("name")
                     var number = data.extras.getString("number")
                     downloadXML(number)
-
                 }
             }
         }
@@ -121,17 +124,64 @@ class MainActivity : AppCompatActivity() {
 
 
     fun downloadXML(number : String) {
-        val xd = XMLDownloader()
-        xd.execute(number)
+        val xd = XMLDownloader(number)
+        xd.execute()
     }
 
-    /*fun loadData() {
-        val filename = "615.xml"
+    fun loadData(number: String) {
+        Log.e("Load","start Load")
+        val filename = "$number.xml"
         val path = filesDir
         val inDir = File(path, "XML")
+        if (inDir.exists()) {
+            val file = File(inDir, filename)
+            if (file.exists()) {
+                val xmlDoc : Document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(file)
+                xmlDoc.documentElement.normalize()
+                val items: NodeList = xmlDoc.getElementsByTagName("ITEM")
+                for (i in 0..items.length - 1) {
+                    val itemNode: Node = items.item(i)
+                    if (itemNode.getNodeType() == Node.ELEMENT_NODE) {
+                        val elem = itemNode as Element
+                        val children = elem.childNodes
 
-    }*/
-    private inner class XMLDownloader: AsyncTask<String, Int, String>() {
+                        var brickList:MutableList<Brick>? = null
+
+                        var itemtype:String? = null
+                        var itemID:String? = null
+                        var qty:String? = null
+                        var color:String? = null
+                        var extra:String? = null
+                        var alternate:String? = null
+                        for (j in 0..children.length - 1) {
+                            val node = children.item(j)
+                            if (node is Element) {
+                                when (node.nodeName) {
+                                    "ITEMTYPE" -> {itemtype = node.textContent}
+                                    "ITEMID" -> {itemID = node.textContent}
+                                    "QTY" -> {qty = node.textContent}
+                                    "COLOR" -> {color = node.textContent}
+                                    "EXTRA" -> {extra = node.textContent}
+                                    "ALTERNATE" -> {
+                                        if (node.textContent == "N") {
+                                            alternate = node.textContent
+                                        }
+                                    }
+                                    else -> { }
+                                }
+                            }
+                        }
+                        Log.e("Load","$itemtype, $itemID, $qty, $color, $extra, $alternate")
+                        val b = Brick(itemtype, itemID, qty, color, extra, alternate)
+                        brickList?.add(b)
+                    }
+                }
+            }
+        }
+
+    }
+    private inner class XMLDownloader(number: String): AsyncTask<String, Int, String>() {
+        var number = number
         override fun onPreExecute() {
             super.onPreExecute()
         }
@@ -139,14 +189,12 @@ class MainActivity : AppCompatActivity() {
         override fun onPostExecute(result: String?) {
             super.onPostExecute(result)
             Log.e("XML", "DownloadXML Complete")
-            //loadData
+            loadData(number)
             //showData
         }
 
         override fun doInBackground(vararg params: String?): String {
             try {
-                //Log.e("XML", "$filesDir/XML, ${params.toList()}")
-                var number = params[0]
                 val url = URL("$URL_PREFIX$number.xml")
                 val connection = url.openConnection()
                 connection.connect()
