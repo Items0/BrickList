@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var viewManager: RecyclerView.LayoutManager
-    var myList = ArrayList<String>()
+    var myList = ArrayList<Pair<String, String>>()
 
     var myDbHelper = DataBaseHelper(this)
 
@@ -41,7 +41,19 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        for (i in 0..20) myList.add("Set #$i")
+        try {
+            myDbHelper.createDataBase()
+        } catch (ioe: IOException) {
+            throw Error("Unable to create database")
+        }
+
+        try {
+            myDbHelper.openDataBase()
+        } catch (sqle: SQLException) {
+            throw sqle
+        }
+
+        myList = myDbHelper.firstLoad()
         viewManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
         viewAdapter = RecyclerViewAdapter(myList) { itemDto: String, position: Int ->
             val i = Intent(this, SetActivity::class.java)
@@ -61,22 +73,6 @@ class MainActivity : AppCompatActivity() {
 
             // specify an viewAdapter (see also next example)
             adapter = viewAdapter
-        }
-
-
-
-
-        try {
-            myDbHelper.createDataBase()
-        } catch (ioe: IOException) {
-            throw Error("Unable to create database")
-        }
-
-
-        try {
-            myDbHelper.openDataBase()
-        } catch (sqle: SQLException) {
-            throw sqle
         }
 
     }

@@ -8,7 +8,7 @@
     tools:layout_editor_absoluteY="81dp">
 
     <TextView
-        android:id="@+id/nameTextView"
+        android:id="@+id/numberTextView"
         android:layout_width="113dp"
         android:layout_height="33dp"
         android:layout_marginTop="8dp"
@@ -16,17 +16,17 @@
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/numberTextView"
+        app:layout_constraintStart_toEndOf="@+id/nameTextView"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/numberTextView"
+        android:id="@+id/nameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="TextView"
         android:textSize="24sp"
-        app:layout_constraintEnd_toStartOf="@+id/nameTextView"
+        app:layout_constraintEnd_toStartOf="@+id/numberTextView"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -36,7 +36,7 @@
         android:layout_width="368dp"
         android:layout_height="356dp"
         android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@+id/nameTextView"
+        app:layout_constraintTop_toBottomOf="@+id/numberTextView"
         tools:layout_editor_absoluteX="8dp" />
 
     <Button

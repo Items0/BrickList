@@ -14,10 +14,11 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+
+import kotlin.Pair;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
 
@@ -148,25 +149,25 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public String testme() {
-        String myString = "";
-        Cursor mCursor = myDataBase.rawQuery("SELECT name FROM sqlite_master WHERE type='table'", null);
-        //Cursor mCursor = myDataBase.rawQuery("SELECT * FROM Parts where Code=3001", null);
+    public ArrayList<Pair<String, String>> firstLoad() {
+        ArrayList<Pair<String, String>> myList = new ArrayList<Pair<String, String>>();
+        Cursor mCursor = myDataBase.rawQuery("SELECT _id, Name FROM Inventories ", null);
 
         if (mCursor.moveToFirst()) {
             while ( !mCursor.isAfterLast() ) {
-                myString += mCursor.getString(0) + "\n";
+                int indexID = mCursor.getColumnIndex("_id");
+                int indexName = mCursor.getColumnIndex("Name");
+                myList.add(new Pair(mCursor.getString(indexID),  mCursor.getString(indexName)));
                 mCursor.moveToNext();
             }
         }
-        return myString;
-        // mCursor.getString(mCursor.getColumnIndex("Code"));
-
+        return myList;
     }
 
     public void insertInventory(List<Brick> brickList, String inventoryID, String name) {
 
         ContentValues insertValues = new ContentValues();
+        insertValues.put("_id", inventoryID);
         insertValues.put("Name", name);
         insertValues.put("Active", "1");
         insertValues.put("LastAccessed", new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime()));

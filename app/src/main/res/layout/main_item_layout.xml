@@ -8,18 +8,26 @@
         android:layout_margin="5dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
+
         <LinearLayout
-            android:padding="10dp"
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp">
 
             <TextView
-                android:id="@+id/name"
+                android:id="@+id/numberTextView"
+                android:layout_width="92dp"
+                android:layout_height="wrap_content"
+                android:text="testNo"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
+
+            <TextView
+                android:id="@+id/nameTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="exampleName"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
+                android:text="testName"
+                android:textSize="22sp" />
         </LinearLayout>
     </android.support.v7.widget.CardView>
 
