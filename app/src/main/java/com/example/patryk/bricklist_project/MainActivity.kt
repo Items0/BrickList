@@ -6,11 +6,11 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
-import android.widget.AdapterView.OnItemClickListener
+import android.database.SQLException
 import android.widget.Toast
+import java.io.IOException
 
 
 class MainActivity : AppCompatActivity() {
@@ -23,6 +23,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var viewManager: RecyclerView.LayoutManager
     var myList = ArrayList<String>()
+
+    var myDbHelper = DataBaseHelper(this)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -49,6 +52,22 @@ class MainActivity : AppCompatActivity() {
             adapter = viewAdapter
         }
 
+
+
+
+        try {
+            myDbHelper.createDataBase()
+        } catch (ioe: IOException) {
+            throw Error("Unable to create database")
+        }
+
+
+        try {
+            myDbHelper.openDataBase()
+        } catch (sqle: SQLException) {
+            throw sqle
+        }
+
     }
 
     fun addNewSet(v: View) {
@@ -61,9 +80,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun settingsActivity(v: View) {
-        val i = Intent(this, SettingsActivity::class.java)
+        /*val i = Intent(this, SettingsActivity::class.java)
         i.putExtra("urlprefix", URL_PREFIX)
         startActivityForResult(i, REQUEST_CODE_SETTINGS)
+        */
+
+        var myval = myDbHelper.testme();
+        Toast.makeText(this, myval, Toast.LENGTH_LONG).show()
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -81,8 +105,14 @@ class MainActivity : AppCompatActivity() {
                 if (data != null) {
                     var name = data.extras.getString("name")
                     var number = data.extras.getString("number")
+
                 }
             }
         }
+    }
+
+
+    fun downloadXML() {
+
     }
 }
