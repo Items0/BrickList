@@ -7,7 +7,7 @@ import android.view.View
 import android.widget.TextView
 
 
-class RecyclerViewAdapter(val items : ArrayList<Pair<String, String>>, val clickListener: (String, Int) -> Unit) : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
+class RecyclerViewAdapterMain(val items : ArrayList<Pair<String, String>>, val clickListener: (Int) -> Unit) : RecyclerView.Adapter<RecyclerViewAdapterMain.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent?.context).inflate(R.layout.main_item_layout, parent, false)
         return ViewHolder(v);
@@ -17,7 +17,7 @@ class RecyclerViewAdapter(val items : ArrayList<Pair<String, String>>, val click
         holder?.myNumberTextView?.text = items[position].first
         holder?.myNameTextView?.text = items[position].second
 
-        holder?.itemView.setOnClickListener { clickListener(items[position].first, position) }
+        holder?.itemView.setOnClickListener { clickListener(position) }
         //holder?.containerView?.setOnClickListener { clickListener(item)
     }
 

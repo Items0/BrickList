@@ -53,12 +53,14 @@ class MainActivity : AppCompatActivity() {
             throw sqle
         }
 
-        myList = myDbHelper.firstLoad()
+        myList = myDbHelper.firstLoadInventories()
         viewManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
-        viewAdapter = RecyclerViewAdapter(myList) { itemDto: String, position: Int ->
+        viewAdapter = RecyclerViewAdapterMain(myList) { position: Int ->
             val i = Intent(this, SetActivity::class.java)
-            i.putExtra("itemDto", itemDto)
-            i.putExtra("position", position)
+            i.putExtra("number", myList[position].first)
+            i.putExtra("name",  myList[position].second)
+            //var list = myDbHelper.loadInventoriesParts(myList[position].first)
+            //i.putExtra("list", list)
             startActivityForResult(i, REQUEST_CODE_SET)
         }
 

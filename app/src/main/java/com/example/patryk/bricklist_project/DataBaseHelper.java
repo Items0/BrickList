@@ -149,18 +149,36 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public ArrayList<Pair<String, String>> firstLoad() {
+    public ArrayList<Pair<String, String>> firstLoadInventories() {
         ArrayList<Pair<String, String>> myList = new ArrayList<Pair<String, String>>();
         Cursor mCursor = myDataBase.rawQuery("SELECT _id, Name FROM Inventories ", null);
 
         if (mCursor.moveToFirst()) {
+            int indexID = mCursor.getColumnIndex("_id");
+            int indexName = mCursor.getColumnIndex("Name");
             while ( !mCursor.isAfterLast() ) {
-                int indexID = mCursor.getColumnIndex("_id");
-                int indexName = mCursor.getColumnIndex("Name");
                 myList.add(new Pair(mCursor.getString(indexID),  mCursor.getString(indexName)));
                 mCursor.moveToNext();
             }
         }
+        return myList;
+    }
+
+    public ArrayList<Pair<String, String>> loadInventoriesParts (String InventoryID) {
+        ArrayList<Pair<String, String>> myList = new ArrayList<Pair<String, String>>();
+        Cursor mCursor = myDataBase.rawQuery("SELECT * FROM InventoriesParts where InventoryID=?", new String[]{InventoryID});
+
+        if (mCursor.moveToFirst()) {
+            int indexID = mCursor.getColumnIndex("ItemID");
+            //int indexName = mCursor.getColumnIndex("Name");
+            int indexQuantityInSet = mCursor.getColumnIndex("QuantityInSet");
+            int indexQuantityInStore = mCursor.getColumnIndex("QuantityInStore");
+            while ( !mCursor.isAfterLast() ) {
+                myList.add(new Pair(mCursor.getString(indexID),  mCursor.getString(indexQuantityInSet)));
+                mCursor.moveToNext();
+            }
+        }
+        Log.e("Length:", String.valueOf(myList.size()));
         return myList;
     }
 
