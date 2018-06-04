@@ -15,11 +15,12 @@ class SetActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var viewManager: RecyclerView.LayoutManager
+    var myDbHelper = DataBaseHelper(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_set)
-        var myDbHelper = DataBaseHelper(this)// = (application as MainActivity).myDbHelper // napraw to
+
         try {
             myDbHelper.openDataBase()
         } catch (sqle: SQLException) {
@@ -35,15 +36,9 @@ class SetActivity : AppCompatActivity() {
         myList = myDbHelper.loadInventoriesParts(number)
 
         viewManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
-        viewAdapter = RecyclerViewAdapterSet(myList) { position: Int ->
-            //val i = Intent(this, SetActivity::class.java)
-            //i.putExtra("number", myList[position].first)
-            //i.putExtra("name",  myList[position].second)
-            //var list = myDbHelper.loadInventoriesParts(myList[position].first)
-            //i.putExtra("list", list)
-            //startActivityForResult(i, REQUEST_CODE_SET)
-        }
+        viewAdapter = RecyclerViewAdapterSet(myList)
 
+        //var blas = RecyclerViewAdapterSet(myList).valuesList // naprawTO
 
         recyclerView = findViewById<RecyclerView>(R.id.mySetRecyclerView).apply {
             // use this setting to improve performance if you know that changes
@@ -56,5 +51,10 @@ class SetActivity : AppCompatActivity() {
             // specify an viewAdapter (see also next example)
             adapter = viewAdapter
         }
+    }
+
+    override fun finish() {
+        myDbHelper.modifyInventoriesParts(myList)
+        super.finish()
     }
 }

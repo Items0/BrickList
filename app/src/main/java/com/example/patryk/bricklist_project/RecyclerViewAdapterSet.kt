@@ -12,8 +12,7 @@ import android.widget.Button
 import android.widget.TextView
 
 
-class RecyclerViewAdapterSet(var items : ArrayList<Brick>, var clickListener: (Int) -> Unit) : RecyclerView.Adapter<RecyclerViewAdapterSet.ViewHolder>() {
-    var valuesList = mutableListOf<Int>()
+class RecyclerViewAdapterSet(var items : ArrayList<Brick>) : RecyclerView.Adapter<RecyclerViewAdapterSet.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent?.context).inflate(R.layout.set_item_layout, parent, false)
         return ViewHolder(v)
@@ -23,38 +22,33 @@ class RecyclerViewAdapterSet(var items : ArrayList<Brick>, var clickListener: (I
         holder?.brickNameTextView?.text =  items[position].itemID
         holder?.brickNumberTextView?.text = "#" + position.toString()
         holder?.countTextView?.text = "${items[position].qtyInStore} / ${items[position].qty}"
-        valuesList.add(items[position].qtyInStore.toInt())
         holder?.plus?.setOnClickListener { v : View ->
-            if (valuesList[position] < items[position].qty.toInt()) {
-                valuesList[position] += 1
-                if (valuesList[position] == items[position].qty.toInt()) {
-                    Log.e("BLABLA1", "$position")
+            if (items[position].qtyInStore.toInt() < items[position].qty.toInt()) {
+                items[position].qtyInStore = (items[position].qtyInStore.toInt() + 1).toString()
+                if (items[position].qtyInStore == items[position].qty) {
                     holder?.myCV.setCardBackgroundColor(Color.parseColor("#33cc00"))
                 }
                 else {
-                    Log.e("BLABLA2", "$position")
                     holder?.myCV.setCardBackgroundColor(Color.parseColor("#ffffff"))
                 }
             }
-
-            holder?.countTextView?.text = valuesList[position].toString() + " / ${items[position].qty}"
+            holder?.countTextView?.text = items[position].qtyInStore + " / ${items[position].qty}"
         }
         holder?.minus?.setOnClickListener { v : View ->
-            if (valuesList[position] > 0) {
-                valuesList[position] -= 1
+            if (items[position].qtyInStore.toInt() > 0) {
+                items[position].qtyInStore = (items[position].qtyInStore.toInt() - 1).toString()
                 holder?.myCV.setCardBackgroundColor(Color.parseColor("#ffffff"))
             }
-            holder?.countTextView?.text = valuesList[position].toString() + " / ${items[position].qty}"
+            holder?.countTextView?.text = items[position].qtyInStore + " / ${items[position].qty}"
         }
 
-
-        /*
-        holder?.myNumberTextView?.text = items[position].first
-        holder?.myNameTextView?.text = items[position].second
-
-        holder?.itemView.setOnClickListener { clickListener(position) }
-        //holder?.containerView?.setOnClickListener { clickListener(item)
-        */
+        // set background color when start
+        if (items[position].qtyInStore == items[position].qty) {
+            holder?.myCV.setCardBackgroundColor(Color.parseColor("#33cc00"))
+        }
+        else {
+            holder?.myCV.setCardBackgroundColor(Color.parseColor("#ffffff"))
+        }
     }
 
     override fun getItemCount(): Int {
@@ -76,6 +70,6 @@ class RecyclerViewAdapterSet(var items : ArrayList<Brick>, var clickListener: (I
         val plus = itemView.findViewById<Button>(R.id.plusButton)
         val minus = itemView.findViewById<Button>(R.id.minusButton)
         val myCV = itemView.findViewById<CardView>(R.id.myCardView)
-    }
 
+    }
 }

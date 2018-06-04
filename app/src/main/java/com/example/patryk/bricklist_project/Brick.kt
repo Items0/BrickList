@@ -1,6 +1,7 @@
 package com.example.patryk.bricklist_project
 
 class Brick {
+    var id = ""
     var itemType:String = ""
     var itemID:String = ""
     var qty:String = ""
@@ -18,7 +19,8 @@ class Brick {
         this.alternate = alternate
     }
 
-    constructor( itemID: String, qty: String, qtyInStore: String, color: String) {
+    constructor(id: String, itemID: String, qty: String, qtyInStore: String, color: String) {
+        this.id = id
         this.itemID = itemID
         this.qty = qty
         this.qtyInStore = qtyInStore

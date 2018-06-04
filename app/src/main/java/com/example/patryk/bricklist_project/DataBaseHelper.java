@@ -169,12 +169,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         Cursor mCursor = myDataBase.rawQuery("SELECT * FROM InventoriesParts where InventoryID=?", new String[]{InventoryID});
 
         if (mCursor.moveToFirst()) {
+            int indexID = mCursor.getColumnIndex("_id");
             int indexItemID = mCursor.getColumnIndex("ItemID");
             int indexQuantityInSet = mCursor.getColumnIndex("QuantityInSet");
             int indexQuantityInStore = mCursor.getColumnIndex("QuantityInStore");
             int indexColor = mCursor.getColumnIndex("ColorID");
             while ( !mCursor.isAfterLast() ) {
-                myList.add(new Brick(mCursor.getString(indexItemID), mCursor.getString(indexQuantityInSet), mCursor.getString(indexQuantityInStore), mCursor.getString(indexColor)));
+                myList.add(new Brick(mCursor.getString(indexID), mCursor.getString(indexItemID), mCursor.getString(indexQuantityInSet), mCursor.getString(indexQuantityInStore), mCursor.getString(indexColor)));
                 mCursor.moveToNext();
             }
         }
@@ -215,4 +216,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         myDataBase.delete("InventoriesParts", null, null);
         Log.e("delete", "deleteOK");
     }
+
+    public void modifyInventoriesParts(List<Brick> brickList) {
+        ContentValues modifyValues = new ContentValues();
+        for (Brick el : brickList) {
+            modifyValues.put("QuantityInStore", el.getQtyInStore());
+            myDataBase.update("InventoriesParts", modifyValues,"_id = ?", new String[]{el.getId()});
+        }
+    }
+
 }
