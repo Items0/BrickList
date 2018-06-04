@@ -4,10 +4,12 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.View
+import android.widget.Button
 import android.widget.TextView
 
 
-class RecyclerViewAdapterSet(val items : ArrayList<Pair<String, String>>, val clickListener: (Int) -> Unit) : RecyclerView.Adapter<RecyclerViewAdapterSet.ViewHolder>() {
+class RecyclerViewAdapterSet(var items : ArrayList<Pair<String, String>>, var clickListener: (Int) -> Unit) : RecyclerView.Adapter<RecyclerViewAdapterSet.ViewHolder>() {
+    var valuesList = mutableListOf<Int>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent?.context).inflate(R.layout.set_item_layout, parent, false)
         return ViewHolder(v)
@@ -16,6 +18,20 @@ class RecyclerViewAdapterSet(val items : ArrayList<Pair<String, String>>, val cl
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder?.brickNumberTextView?.text = items[position].first
         holder?.countTextView?.text = items[position].second
+        valuesList.add(items[position].second.toInt())
+        holder?.plus?.setOnClickListener { v : View ->
+            if (valuesList[position] < 10) {
+                valuesList[position] += 1
+            }
+            holder?.countTextView?.text = valuesList[position].toString()
+        }
+        holder?.minus?.setOnClickListener { v : View ->
+            if (valuesList[position] > 0) {
+                valuesList[position] -= 1
+            }
+            holder?.countTextView?.text = valuesList[position].toString()
+        }
+
 
         /*
         holder?.myNumberTextView?.text = items[position].first
@@ -33,8 +49,8 @@ class RecyclerViewAdapterSet(val items : ArrayList<Pair<String, String>>, val cl
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val brickNumberTextView = itemView.findViewById<TextView>(R.id.brickNumberTextView)
         val countTextView = itemView.findViewById<TextView>(R.id.countView)
-        //val myNumberTextView = itemView.findViewById<TextView>(R.id.numberTextView)
-        //val myNameTextView = itemView.findViewById<TextView>(R.id.numberTextView)
+        val plus = itemView.findViewById<Button>(R.id.plusButton)
+        val minus = itemView.findViewById<Button>(R.id.minusButton)
     }
 
 }

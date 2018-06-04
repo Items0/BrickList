@@ -45,11 +45,11 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/plusButton"
+                    android:id="@+id/minusButton"
                     android:layout_width="88dp"
                     android:layout_height="46dp"
                     android:layout_weight="1"
-                    android:text="+" />
+                    android:text="-" />
 
                 <TextView
                     android:id="@+id/countView"
@@ -59,12 +59,13 @@
                     android:text="count"
                     android:gravity = "center"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
+
                 <Button
-                    android:id="@+id/minusButton"
+                    android:id="@+id/plusButton"
                     android:layout_width="88dp"
                     android:layout_height="46dp"
                     android:layout_weight="1"
-                    android:text="-" />
+                    android:text="+" />
             </LinearLayout>
 
         </LinearLayout>
