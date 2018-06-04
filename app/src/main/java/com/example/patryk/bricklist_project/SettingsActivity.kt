@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+
 import kotlinx.android.synthetic.main.activity_settings.*
 
 class SettingsActivity : AppCompatActivity() {
@@ -16,7 +17,7 @@ class SettingsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_settings)
 
         val extras = intent.extras ?: return
-        editText.setText(extras.getString("urlprefix"))
+        prefixEditText.setText(extras.getString("urlprefix"))
 
         try {
             myDbHelper.openDataBase()
@@ -27,7 +28,7 @@ class SettingsActivity : AppCompatActivity() {
 
     override fun finish() {
         val data = Intent()
-        data.putExtra("urlprefix",  editText.text.toString())
+        data.putExtra("urlprefix",  prefixEditText.text.toString())
         setResult(Activity.RESULT_OK, data)
         myDbHelper.close()
         super.finish()

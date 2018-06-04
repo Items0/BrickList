@@ -194,7 +194,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         //Log.e("before for", "size =" +  brickList.size());
         insertValues.clear();
         for (Brick el : brickList) {
-            //insertValues.put("_id", null);
+
             insertValues.put("InventoryID", inventoryID);
             insertValues.put("TypeID", el.getItemType());
             insertValues.put("ItemID", el.getItemID());
@@ -204,19 +204,15 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             insertValues.put("Extra", el.getExtra());
 
             myDataBase.insert("InventoriesParts", null, insertValues);
-            //Log.e("Insert", "Insert to the table");
         }
+        //Log.e("Insert", "Insert to the table");
     }
     // Add your public helper methods to access and get content from the database.
     // You could return cursors by doing "return myDataBase.query(....)" so it'd be easy
     // to you to create adapters for your views.
     public void clearDB() {
-        //myDataBase.de
-        myDataBase.delete("Inventories", "_id <> '615'", null);
-        myDataBase.delete("InventoriesParts", "InventoryID <> '615'", null);
-
-        //myDataBase.rawQuery("DELETE FROM Inventories WHERE _id != '615'", null).moveToFirst();
-        //myDataBase.rawQuery("DELETE FROM InventoriesParts WHERE InventoryID <> '615'", null);
+        myDataBase.delete("Inventories", null, null);
+        myDataBase.delete("InventoriesParts", null, null);
         Log.e("delete", "deleteOK");
     }
 }

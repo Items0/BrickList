@@ -4,28 +4,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SettingsActivity">
+    tools:context=".SettingsActivity"
+    tools:layout_editor_absoluteY="81dp">
 
     <EditText
-        android:id="@+id/editText"
-        android:layout_width="353dp"
-        android:layout_height="41dp"
-        android:layout_marginTop="32dp"
+        android:id="@+id/prefixEditText"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="41dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginStart="15dp"
         android:ems="10"
         android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/clearButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="76dp"
-        android:layout_height="19dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="24dp"
         android:layout_marginTop="24dp"
         android:text="URL Prefix:"
+        app:layout_constraintBottom_toTopOf="@+id/prefixEditText"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -33,11 +37,11 @@
         android:id="@+id/clearButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
+        android:layout_marginBottom="314dp"
         android:onClick="clearDB"
         android:text="Clear DataBase"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText" />
+        app:layout_constraintTop_toBottomOf="@+id/prefixEditText" />
 </android.support.constraint.ConstraintLayout>

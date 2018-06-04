@@ -83,36 +83,36 @@ class MainActivity : AppCompatActivity() {
         myDbHelper.close()
         super.finish()
     }
+
+    fun refreshView() {
+        myList.clear()
+        myList.addAll( myDbHelper.loadInventories())
+        recyclerView.adapter.notifyDataSetChanged()
+    }
+
     fun addNewSet(v: View) {
         val i = Intent(this, addSetActivity::class.java)
         startActivityForResult(i, REQUEST_CODE_NEW_SET)
-
-        //myList.add("Ends")
-        //recyclerView.adapter.notifyItemInserted(myList.size - 1);
-        ///*recyclerView.adapter.notifyDataSetChanged();*/
     }
 
     fun settingsActivity(v: View) {
         val i = Intent(this, SettingsActivity::class.java)
         i.putExtra("urlprefix", URL_PREFIX)
         startActivityForResult(i, REQUEST_CODE_SETTINGS)
-
-        /*
-        var myval = myDbHelper.testme();
-        Toast.makeText(this, myval, Toast.LENGTH_LONG).show()
-        */
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == REQUEST_CODE_SETTINGS) {
             if (resultCode == Activity.RESULT_OK) {
-                        if (data != null) {
-                            if (data.hasExtra("urlprefix")) {
-                                URL_PREFIX = data.extras.getString("urlprefix")
-                            }
-                        }
+                if (data != null) {
+                    if (data.hasExtra("urlprefix")) {
+                        URL_PREFIX = data.extras.getString("urlprefix")
+                        refreshView()
                     }
                 }
+            }
+
+        }
         if (requestCode == REQUEST_CODE_NEW_SET) {
             if (resultCode == Activity.RESULT_OK) {
                 if (data != null) {
@@ -191,17 +191,8 @@ class MainActivity : AppCompatActivity() {
 
         override fun onPostExecute(result: String?) {
             super.onPostExecute(result)
-            Log.e("XML", "DownloadXML Complete")
             loadData(number, name)
-
-            Log.e("XML", "Load complete")
-            Log.e("Size", myList.size.toString())
-            myList.clear()
-            myList = myDbHelper.loadInventories()
-            Log.e("Sizeafter", myList.size.toString())
-            recyclerView.adapter.notifyDataSetChanged()
-            //recyclerView.adapter.notifyItemInserted(myList.size - 1);
-            Log.e("XML", "After notify")
+            refreshView()
         }
 
         override fun doInBackground(vararg params: String?): String {

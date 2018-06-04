@@ -7,7 +7,7 @@ import android.view.View
 import android.widget.TextView
 
 
-class RecyclerViewAdapterMain(val items : ArrayList<Pair<String, String>>, val clickListener: (Int) -> Unit) : RecyclerView.Adapter<RecyclerViewAdapterMain.ViewHolder>() {
+class RecyclerViewAdapterMain(var items : ArrayList<Pair<String, String>>, val clickListener: (Int) -> Unit) : RecyclerView.Adapter<RecyclerViewAdapterMain.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent?.context).inflate(R.layout.main_item_layout, parent, false)
         return ViewHolder(v);
