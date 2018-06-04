@@ -1,19 +1,16 @@
 package com.example.patryk.bricklist_project
 
-import android.content.Intent
 import android.database.SQLException
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.widget.LinearLayout
-import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_set.*
 
 class SetActivity : AppCompatActivity() {
 
-    var myList = ArrayList<Pair<String, String>>()
+    var myList = ArrayList<Brick>()
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
@@ -32,7 +29,7 @@ class SetActivity : AppCompatActivity() {
         var number = extras.getString("number")
         var name = extras.getString("name")
         //myList = extras.getStringArrayList("list")
-        numberTextView.text = number
+        brickNumberTextView.text = number
         nameTextView.text = name
 
         myList = myDbHelper.loadInventoriesParts(number)
@@ -59,13 +56,5 @@ class SetActivity : AppCompatActivity() {
             // specify an viewAdapter (see also next example)
             adapter = viewAdapter
         }
-        //myList = myDbHelper.firstLoadInventories()
-        /*
-        Log.e("Przed", "Przed wypisaniem")
-        for (el in myList) {
-            Log.e("for", el.first)
-           // Toast.makeText(this, el.first, Toast.LENGTH_LONG).show()
-        }*/
-
     }
 }

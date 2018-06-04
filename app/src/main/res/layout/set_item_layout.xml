@@ -6,6 +6,7 @@
     android:layout_height="wrap_content">
 
     <android.support.v7.widget.CardView
+        android:id="@+id/myCardView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="5dp">
@@ -23,19 +24,31 @@
 
                 <ImageView
                     android:id="@+id/imageView"
-                    android:layout_width="86dp"
-                    android:layout_height="70dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_width="231dp"
+                    android:layout_height="96dp"
                     android:layout_weight="1" />
 
-                <TextView
-                    android:id="@+id/brickNumberTextView"
-                    android:layout_width="210dp"
-                    android:layout_height="35dp"
-                    android:layout_marginTop="26dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="name"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/brickNumberTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="number" />
+
+                    <TextView
+                        android:id="@+id/brickNameTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="name"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -56,8 +69,8 @@
                     android:layout_width="88dp"
                     android:layout_height="46dp"
                     android:layout_weight="3"
+                    android:gravity="center"
                     android:text="count"
-                    android:gravity = "center"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
 
                 <Button

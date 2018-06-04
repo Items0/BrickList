@@ -150,12 +150,12 @@ class MainActivity : AppCompatActivity() {
                         val elem = itemNode as Element
                         val children = elem.childNodes
 
-                        var itemtype:String? = null
-                        var itemID:String? = null
-                        var qty:String? = null
-                        var color:String? = null
-                        var extra:String? = null
-                        var alternate:String? = null
+                        var itemtype:String = ""
+                        var itemID:String = ""
+                        var qty:String = ""
+                        var color:String = ""
+                        var extra:String = ""
+                        var alternate:String = ""
                         for (j in 0..children.length - 1) {
                             val node = children.item(j)
                             if (node is Element) {

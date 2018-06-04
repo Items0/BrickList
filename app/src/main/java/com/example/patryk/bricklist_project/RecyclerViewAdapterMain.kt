@@ -26,7 +26,7 @@ class RecyclerViewAdapterMain(var items : ArrayList<Pair<String, String>>, val c
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val myNumberTextView = itemView.findViewById<TextView>(R.id.numberTextView)
+        val myNumberTextView = itemView.findViewById<TextView>(R.id.brickNumberTextView)
         val myNameTextView = itemView.findViewById<TextView>(R.id.nameTextView)
     }
 

@@ -164,21 +164,21 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return myList;
     }
 
-    public ArrayList<Pair<String, String>> loadInventoriesParts (String InventoryID) {
-        ArrayList<Pair<String, String>> myList = new ArrayList<Pair<String, String>>();
+    public ArrayList<Brick> loadInventoriesParts (String InventoryID) {
+        ArrayList<Brick> myList = new ArrayList<Brick>();
         Cursor mCursor = myDataBase.rawQuery("SELECT * FROM InventoriesParts where InventoryID=?", new String[]{InventoryID});
 
         if (mCursor.moveToFirst()) {
-            int indexID = mCursor.getColumnIndex("ItemID");
-            //int indexName = mCursor.getColumnIndex("Name");
+            int indexItemID = mCursor.getColumnIndex("ItemID");
             int indexQuantityInSet = mCursor.getColumnIndex("QuantityInSet");
             int indexQuantityInStore = mCursor.getColumnIndex("QuantityInStore");
+            int indexColor = mCursor.getColumnIndex("ColorID");
             while ( !mCursor.isAfterLast() ) {
-                myList.add(new Pair(mCursor.getString(indexID),  mCursor.getString(indexQuantityInSet)));
+                myList.add(new Brick(mCursor.getString(indexItemID), mCursor.getString(indexQuantityInSet), mCursor.getString(indexQuantityInStore), mCursor.getString(indexColor)));
                 mCursor.moveToNext();
             }
         }
-        Log.e("Length:", String.valueOf(myList.size()));
+        //Log.e("Length:", String.valueOf(myList.size()));
         return myList;
     }
 

@@ -16,7 +16,7 @@
             android:padding="10dp">
 
             <TextView
-                android:id="@+id/numberTextView"
+                android:id="@+id/brickNumberTextView"
                 android:layout_width="92dp"
                 android:layout_height="wrap_content"
                 android:text="testNo"
