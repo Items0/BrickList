@@ -1,0 +1,12 @@
+TO-DO in the future:
+
+1. Update status of set (e.g green background too) when all bricks will be collected.
+2. Sorting set by lastaccess time/date.
+3. Archive option for set.
+4. Sort bricks by color/type.
+5. Display bricks with images.
+6. Email with XML file attachment.
+7. Save XML file on SD card.
+8. Delete selected set.
+9. Custom style for UI.
+10. Animation when change activity/collect all bricks.
