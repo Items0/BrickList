@@ -19,7 +19,7 @@ class RecyclerViewAdapterSet(var items : ArrayList<Brick>) : RecyclerView.Adapte
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder?.brickNameTextView?.text =  items[position].itemID
+        holder?.brickNameTextView?.text =  items[position].brickName
         holder?.brickNumberTextView?.text = "#" + position.toString()
         holder?.countTextView?.text = "${items[position].qtyInStore} / ${items[position].qty}"
         holder?.plus?.setOnClickListener { v : View ->

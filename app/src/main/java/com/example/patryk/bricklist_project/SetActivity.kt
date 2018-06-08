@@ -48,7 +48,7 @@ class SetActivity : AppCompatActivity() {
         val extras = intent.extras ?: return
         var number = extras.getString("number")
         var name = extras.getString("name")
-        //myList = extras.getStringArrayList("list")
+
         brickNumberTextView.text = number
         nameTextView.text = name
 
@@ -57,7 +57,6 @@ class SetActivity : AppCompatActivity() {
         viewManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
         viewAdapter = RecyclerViewAdapterSet(myList)
 
-        //var blas = RecyclerViewAdapterSet(myList).valuesList // naprawTO
 
         recyclerView = findViewById<RecyclerView>(R.id.mySetRecyclerView).apply {
             // use this setting to improve performance if you know that changes
@@ -114,7 +113,39 @@ class SetActivity : AppCompatActivity() {
 
         //Toast.makeText(this, "XML Complete  " + Environment.getExternalStorageDirectory().absolutePath, Toast.LENGTH_LONG).show()
 
+        /*
+        try {
+            val filename = "xml-test-output.xml"
+            val filelocation = File(Environment.getExternalStorageDirectory().getAbsolutePath(), filename)
+            val path = Uri.fromFile(filelocation)
+            val intent = Intent(Intent.ACTION_SENDTO)
+            intent.type = "text/plain"
+            val message = "File to be shared is xml-test-output.xml" + "yes"
+            intent.putExtra(Intent.EXTRA_SUBJECT, "Brick List")
+            intent.putExtra(Intent.EXTRA_STREAM,  "$filesDir/xml-test-output.xml")
+            intent.putExtra(Intent.EXTRA_TEXT, message)
+            intent.data = Uri.parse("mailto:xyz@gmail.com")
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+
+            startActivity(intent)
+        } catch (e: Exception) {
+            println("is exception raises during sending mail$e")
+        }
+        */
         
+        val filename = "/xml-test-output.xml"
+        val filelocation = File("/data/data/com.example.patryk.bricklist_project/files/xml-test-output.xml")
+        val path = Uri.fromFile(filelocation)
+        val emailIntent = Intent(Intent.ACTION_SEND)
+        // set the type to 'email'
+        emailIntent.type = "vnd.android.cursor.dir/email"
+        val to = arrayOf("example@gmail.com")
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, to)
+        // the attachment
+        emailIntent.putExtra(Intent.EXTRA_STREAM, path)
+        // the mail subject
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Your brickList file")
+        startActivity(Intent.createChooser(emailIntent, "Send email..."))
 
     }
 

@@ -9,7 +9,10 @@ class Brick {
     var extra:String = ""
     var alternate:String = ""
     var qtyInStore:String = ""
+
+    var brickName: String = ""
     //var picture:
+
     constructor(itemtype: String, itemID: String, qty: String, color: String, extra: String, alternate: String) {
         this.itemType = itemtype
         this.itemID = itemID
@@ -19,7 +22,9 @@ class Brick {
         this.alternate = alternate
     }
 
-    constructor(id: String, itemID: String, qty: String, qtyInStore: String, color: String) {
+    constructor(brickName: String, itemType: String, id: String, itemID: String, qty: String, qtyInStore: String, color: String ) {
+        this.brickName = brickName
+        this.itemType = itemType
         this.id = id
         this.itemID = itemID
         this.qty = qty

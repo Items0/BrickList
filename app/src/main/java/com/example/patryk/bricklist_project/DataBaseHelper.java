@@ -166,20 +166,23 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     public ArrayList<Brick> loadInventoriesParts (String InventoryID) {
         ArrayList<Brick> myList = new ArrayList<Brick>();
-        Cursor mCursor = myDataBase.rawQuery("SELECT * FROM InventoriesParts where InventoryID=?", new String[]{InventoryID});
+        Cursor mCursor = myDataBase.rawQuery("SELECT InventoriesParts.*, Parts.Name FROM InventoriesParts  JOIN Parts ON InventoriesParts.ItemId=Parts.Code where InventoryID = ?", new String[]{InventoryID});
 
         if (mCursor.moveToFirst()) {
+
+            int indexItemType = mCursor.getColumnIndex("TypeID");
             int indexID = mCursor.getColumnIndex("_id");
             int indexItemID = mCursor.getColumnIndex("ItemID");
             int indexQuantityInSet = mCursor.getColumnIndex("QuantityInSet");
             int indexQuantityInStore = mCursor.getColumnIndex("QuantityInStore");
             int indexColor = mCursor.getColumnIndex("ColorID");
+            int indexBrickName = mCursor.getColumnIndex("Name");
             while ( !mCursor.isAfterLast() ) {
-                myList.add(new Brick(mCursor.getString(indexID), mCursor.getString(indexItemID), mCursor.getString(indexQuantityInSet), mCursor.getString(indexQuantityInStore), mCursor.getString(indexColor)));
+                myList.add(new Brick(mCursor.getString(indexBrickName), mCursor.getString(indexItemType), mCursor.getString(indexID), mCursor.getString(indexItemID), mCursor.getString(indexQuantityInSet), mCursor.getString(indexQuantityInStore), mCursor.getString(indexColor)));
                 mCursor.moveToNext();
             }
         }
-        //Log.e("Length:", String.valueOf(myList.size()));
+
         return myList;
     }
 
@@ -192,8 +195,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         insertValues.put("LastAccessed", new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime()));
 
         myDataBase.insert("Inventories", null, insertValues);
-        //Log.e("before for", "size =" +  brickList.size());
         insertValues.clear();
+
         for (Brick el : brickList) {
 
             insertValues.put("InventoryID", inventoryID);
